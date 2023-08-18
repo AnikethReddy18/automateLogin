@@ -1,15 +1,17 @@
 import customtkinter as ct
 
-ct.set_default_color_theme("blue")
 
 
 class Gui(ct.CTk):
     def __init__(self):
         super().__init__()
         self.to_fill = None
-        self.name = None
+        self.name_form = None
+        self.to_select = None
+        self.name_dropdown = None
         self.row = 1
-        self.dic = {}
+        self.dic_form = {}
+        self.dic_dropdown = {}
 
         # Configure Window
         self.title("Automatic Web Filler")
@@ -40,8 +42,8 @@ class Gui(ct.CTk):
     def create_form(self):
         if self.drop.get() == "Form":
 
-            self.name = ct.CTkEntry(self, placeholder_text="Name of element", font=self.font)
-            self.name.grid(column=0, row=self.row, padx=12, pady=20)
+            self.name_form = ct.CTkEntry(self, placeholder_text="Name of element", font=self.font)
+            self.name_form.grid(column=0, row=self.row, padx=12, pady=20)
 
             self.to_fill = ct.CTkEntry(self, placeholder_text="Value to fill", font=self.font)
             self.to_fill.grid(column=1, row=self.row, padx=12, pady=20)
@@ -51,13 +53,23 @@ class Gui(ct.CTk):
             self.row += 1
 
         else:
-            pass
+
+            self.name_dropdown = ct.CTkEntry(self, placeholder_text="Name of element", font=self.font)
+            self.name_dropdown.grid(column=0, row=self.row, padx=12, pady=20)
+
+            self.to_select = ct.CTkEntry(self, placeholder_text="Value to fill", font=self.font)
+            self.to_select.grid(column=1, row=self.row, padx=12, pady=20)
+
+            self.submit_button_all.grid(column=2, row=self.row + 1, pady=12)
+
+            self.row += 1
 
     def load(self):
-        self.dic[self.name.get()] = self.to_fill.get()
+        self.dic_form[self.name_form.get()] = self.to_fill.get()
+        self.dic_dropdown[self.name_dropdown.get()] = self.to_select.get()
 
     def create_load_form(self):
-        if self.name is None:
+        if self.name_form is None:
             self.create_form()
 
         else:
@@ -66,7 +78,8 @@ class Gui(ct.CTk):
 
     def submit(self):
         self.load()
-        print(self.dic)
+        print(self.dic_form)
+        print(self.dic_dropdown)
 
 
 app = Gui()
