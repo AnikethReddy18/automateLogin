@@ -36,7 +36,6 @@ class Gui(ct.CTk):
         select_label.grid(column=0, row=0, padx=12)
         self.drop.grid(column=1, row=0, padx=12)
         create_button.grid(column=2, row=0, padx=12)
-        # submit_button.grid(column=2, row=self.row+1, pady=12)
 
     def create_form(self):
         if self.drop.get() == "Form":
@@ -47,8 +46,6 @@ class Gui(ct.CTk):
             self.to_fill = ct.CTkEntry(self, placeholder_text="Value to fill", font=self.font)
             self.to_fill.grid(column=1, row=self.row, padx=12, pady=20)
 
-            # submit_button = ct.CTkButton(self, text="Submit", font=self.font)
-            # submit_button.grid(column=2, row=self.row, padx=12, pady=12)
             self.submit_button_all.grid(column=2, row=self.row + 1, pady=12)
 
             self.row += 1
@@ -66,7 +63,6 @@ class Gui(ct.CTk):
         else:
             self.load()
             self.create_form()
-
 
     def submit(self):
         self.load()
