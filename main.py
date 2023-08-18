@@ -107,6 +107,9 @@ class Gui(ct.CTk):
         for name in self.dic_forms:
             driver_instance.form_fill(name, self.dic_forms[name])
 
+        for name in self.dic_selectors:
+            driver_instance.select_dropdown(name, self.dic_selectors[name])
+
 
 # url = "https://www.instagram.com/"
 # instagram_driver = Driver(url, 3)
