@@ -7,9 +7,12 @@ class Gui(ct.CTk):
     def __init__(self):
         super().__init__()
         self.to_fill = None
-        self.name = None
+        self.name_form = None
+        self.to_select = None
+        self.name_selector = None
         self.row = 1
-        self.dic = {}
+        self.dic_forms = {}
+        self.dic_selectors = {}
 
         # Configure Window
         self.title("Automatic Web Filler")
@@ -27,7 +30,7 @@ class Gui(ct.CTk):
         self.drop = ct.CTkOptionMenu(self, values=["Form", "Dropdown"], font=self.font, corner_radius=3)
 
         # Selection Button
-        create_button = ct.CTkButton(self, text="Create", font=self.font, command=self.create_load_form)
+        create_button = ct.CTkButton(self, text="Create", font=self.font, command=self.create_load)
 
         # Submit All Button
         self.submit_button_all = ct.CTkButton(self, text="Submit All", font=self.font, command=self.submit)
@@ -38,31 +41,54 @@ class Gui(ct.CTk):
         create_button.grid(column=2, row=0, padx=12)
 
     def create_form(self):
-        if self.drop.get() == "Form":
 
-            self.name = ct.CTkEntry(self, placeholder_text="Name of element", font=self.font)
-            self.name.grid(column=0, row=self.row, padx=12, pady=20)
+        self.name_form = ct.CTkEntry(self, placeholder_text="Name of element", font=self.font)
+        self.name_form.grid(column=0, row=self.row, padx=12, pady=20)
 
-            self.to_fill = ct.CTkEntry(self, placeholder_text="Value to fill", font=self.font)
-            self.to_fill.grid(column=1, row=self.row, padx=12, pady=20)
+        self.to_fill = ct.CTkEntry(self, placeholder_text="Value to fill", font=self.font)
+        self.to_fill.grid(column=1, row=self.row, padx=12, pady=20)
 
-            self.submit_button_all.grid(column=2, row=self.row + 1, pady=12)
+        self.submit_button_all.grid(column=2, row=self.row + 1, pady=12)
 
-            self.row += 1
+        self.row += 1
+
+    def create_selector(self):
+
+        self.name_selector = ct.CTkEntry(self, placeholder_text="Name of element", font=self.font)
+        self.name_selector.grid(column=0, row=self.row, padx=12, pady=20)
+
+        self.to_select = ct.CTkEntry(self, placeholder_text="Value to Select", font=self.font)
+        self.to_select.grid(column=1, row=self.row, padx=12, pady=20)
+
+        self.submit_button_all.grid(column=2, row=self.row + 1, pady=12)
+
+        self.row += 1
+
+    def load_form(self):
+        self.dic_forms[self.name_form.get()] = self.to_fill.get()
+
+    def load_selector(self):
+        self.dic_selectors[self.name_selector.get()] = self.to_select.get()
+
+    def create_load(self):
+
+        state = self.drop.get()
+        name_form = self.name_form
+        name_selector = self.name_selector
+
+        if name_form is not None or name_selector is not None:
+            if state == "Form":
+                self.create_form()
+
+            else:
+                self.create_selector()
 
         else:
-            pass
+            if state == "Form":
+                self.create_form()
 
-    def load(self):
-        self.dic[self.name.get()] = self.to_fill.get()
-
-    def create_load_form(self):
-        if self.name is None:
-            self.create_form()
-
-        else:
-            self.load()
-            self.create_form()
+            else:
+                self.create_selector()
 
     def submit(self):
         self.load()
