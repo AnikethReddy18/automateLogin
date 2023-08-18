@@ -7,12 +7,13 @@ import time
 
 class Driver:
     def __init__(self, url, load_time):
-        chrome_options = Options()
-        chrome_options.add_experimental_option("detach", True)
-        self.driver = webdriver.Chrome(options=chrome_options)
+        self.chrome_options = Options()
+        self.chrome_options.add_experimental_option("detach", True)
+        self.driver = webdriver.Chrome(options=self.chrome_options)
         self.url = url
         self.driver.get(self.url)
-        time.sleep(load_time)
+        self.load_time = load_time
+        time.sleep(self.load_time)
 
     def form_fill(self, name, to_fill):
         form = self.driver.find_element(By.NAME, name)
@@ -22,3 +23,6 @@ class Driver:
     def select_dropdown(self, name, value):
         drop = Select(self.driver.find_element(By.NAME, name))
         drop.select_by_value(value)
+
+class Instagram():
+    pass#Write code to spam

@@ -1,9 +1,9 @@
 import customtkinter as ct
+from automate import Driver
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
-ct.set_default_color_theme("blue")
-#
-
-class Gui(ct.CTk):
+class Gui(ct.CTk, Driver):
     def __init__(self):
         super().__init__()
         self.to_fill = None
@@ -22,6 +22,10 @@ class Gui(ct.CTk):
         # Font
         self.font = ("Work Sans", 16)
 
+        # Url and load time
+        self.url_entry = ct.CTkEntry(self, placeholder_text="URL of the target site", font=self.font)
+        self.load_time_entry = ct.CTkEntry(self, placeholder_text="Time to load(s)", font=self.font)
+
         # Selection Label
         select_label = ct.CTkLabel(self, text="Select the form type:  ", font=self.font)
         warning_label = ct.CTkLabel(self, text="Only click create after filling the values", font=self.font)
@@ -35,9 +39,12 @@ class Gui(ct.CTk):
         # Submit All Button
         self.submit_button_all = ct.CTkButton(self, text="Submit All", font=self.font, command=self.submit)
 
+        # Display URL and load time
+        self.url_entry.grid(column=0, row=0, pady=25)
+        self.load_time_entry.grid(column=1, row=0)
         # Display Selection Part
         select_label.grid(column=0, row=1, padx=12)
-        warning_label.grid(column=1, row=0, sticky="n")
+        # warning_label.grid(column=1, row=0, sticky="n")
         self.drop.grid(column=1, row=1, padx=12)
         create_button.grid(column=2, row=1, padx=12)
 
@@ -93,9 +100,18 @@ class Gui(ct.CTk):
                 self.create_selector()
 
     def submit(self):
+        self.url = self.url_entry.get()
+        self.load_time = int(self.load_time_entry.get())
+        self.driver = webdriver.Chrome(options=self.chrome_options)
+        self.driver.get(self.url)
         self.load()
-        print(f"Forms: {self.dic_forms}\nSelectors={self.dic_selectors}")
 
+        for name in self.dic_forms:
+            self.form_fill(name, self.dic_forms)
+
+
+# url = "https://www.instagram.com/"
+# instagram_driver = Driver(url, 3)
 
 app = Gui()
 app.mainloop()
