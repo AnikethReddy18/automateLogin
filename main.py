@@ -1,9 +1,8 @@
 import customtkinter as ct
 from automate import Driver
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 
-class Gui(ct.CTk, Driver):
+
+class Gui(ct.CTk):
     def __init__(self):
         super().__init__()
         self.to_fill = None
@@ -100,14 +99,13 @@ class Gui(ct.CTk, Driver):
                 self.create_selector()
 
     def submit(self):
-        self.url = self.url_entry.get()
-        self.load_time = int(self.load_time_entry.get())
-        self.driver = webdriver.Chrome(options=self.chrome_options)
-        self.driver.get(self.url)
         self.load()
+        url = self.url_entry.get()
+        load_time = int(self.load_time_entry.get())
+        driver_instance = Driver(url, int(load_time))
 
         for name in self.dic_forms:
-            self.form_fill(name, self.dic_forms)
+            driver_instance.form_fill(name, self.dic_forms[name])
 
 
 # url = "https://www.instagram.com/"
