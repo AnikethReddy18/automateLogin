@@ -6,7 +6,10 @@ ct.set_default_color_theme("blue")
 class Gui(ct.CTk):
     def __init__(self):
         super().__init__()
+        self.to_fill = None
+        self.name = None
         self.row = 1
+        self.dic = {}
 
         # Configure Window
         self.title("Automatic Web Filler")
@@ -24,28 +27,50 @@ class Gui(ct.CTk):
         self.drop = ct.CTkOptionMenu(self, values=["Form", "Dropdown"], font=self.font, corner_radius=3)
 
         # Selection Button
-        select_button = ct.CTkButton(self, text="Create", font=self.font, command=self.create_form)
+        create_button = ct.CTkButton(self, text="Create", font=self.font, command=self.create_load_form)
+
+        # Submit All Button
+        self.submit_button = ct.CTkButton(self, text="Submit All", font=self.font, command=self.print)
 
         # Display Selection Part
         select_label.grid(column=0, row=0, padx=12)
         self.drop.grid(column=1, row=0, padx=12)
-        select_button.grid(column=2, row=0, padx=12)
+        create_button.grid(column=2, row=0, padx=12)
+        # submit_button.grid(column=2, row=self.row+1, pady=12)
 
     def create_form(self):
         if self.drop.get() == "Form":
-            name = ct.CTkEntry(self, placeholder_text="Name of element", font=self.font)
-            name.grid(column=0, row=self.row, padx=12, pady=20)
 
-            to_fill = ct.CTkEntry(self, placeholder_text="Value to fill", font=self.font)
-            to_fill.grid(column=1, row=self.row, padx=12, pady=20)
+            self.name = ct.CTkEntry(self, placeholder_text="Name of element", font=self.font)
+            self.name.grid(column=0, row=self.row, padx=12, pady=20)
 
-            submit_button = ct.CTkButton(self, text="Submit", font=self.font)
-            submit_button.grid(column=2, row=self.row, padx=12, pady=12)
+            self.to_fill = ct.CTkEntry(self, placeholder_text="Value to fill", font=self.font)
+            self.to_fill.grid(column=1, row=self.row, padx=12, pady=20)
+
+            # submit_button = ct.CTkButton(self, text="Submit", font=self.font)
+            # submit_button.grid(column=2, row=self.row, padx=12, pady=12)
+            # self.submit_button.grid(column=2, row=self.row + 1, pady=12)
 
             self.row += 1
 
         else:
             pass
+
+    def load(self):
+        self.dic[self.name.get()] = self.to_fill.get()
+
+    def create_load_form(self):
+        if self.name is None:
+            self.create_form()
+
+        else:
+            self.load()
+            self.create_form()
+
+
+
+    def print(self):
+        print(self.dic)
 
 
 app = Gui()
