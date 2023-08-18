@@ -6,6 +6,7 @@ import time
 from dotenv import load_dotenv
 from os import getenv
 
+
 def automate():
     driver = webdriver.Chrome(options=chrome_options)
     driver.get(url)
@@ -82,8 +83,10 @@ def automate():
         currentEmailid_e = driver.find_element(By.ID, "currentEmailid")
         currentEmailid_e.send_keys(currentEmailid)
 
+
 chrome_options = Options()
 chrome_options.add_experimental_option("detach", True)
+
 load_dotenv(".env")
 app_num = getenv("APPLICATION_NUMBER")
 d_bdd = getenv("B_BD")
@@ -98,16 +101,15 @@ community = getenv("COMMUNITY")
 ews = getenv("EWS")
 phyChallenge = getenv("PHY_CHALLENGED")
 hostel = getenv("HOSTEL")
-aadharno =getenv("AADHARNO")
+aadharno = getenv("AADHARNO")
 currentStreetName = getenv("CUR_STRT_NAME")
 currentAreaName = getenv("CUR_ARA_NAME")
 currentCountry = getenv("CUR_CON")
-currentStatename =getenv("CUR_STATE")
+currentStatename = getenv("CUR_STATE")
 currentDistrict = getenv("CUR_DIST")
 currentPincode = getenv("CUR_PIN")
 currentMobileno = getenv("CUR_MOBILE")
 currentEmailid = getenv("CUR_EMAIL")
-
 
 url = "https://vtop1.vitap.ac.in/studentprofile/"
 automate()
