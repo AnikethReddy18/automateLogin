@@ -30,7 +30,7 @@ class Gui(ct.CTk):
         create_button = ct.CTkButton(self, text="Create", font=self.font, command=self.create_load_form)
 
         # Submit All Button
-        self.submit_button = ct.CTkButton(self, text="Submit All", font=self.font, command=self.print)
+        self.submit_button_all = ct.CTkButton(self, text="Submit All", font=self.font, command=self.submit)
 
         # Display Selection Part
         select_label.grid(column=0, row=0, padx=12)
@@ -49,7 +49,7 @@ class Gui(ct.CTk):
 
             # submit_button = ct.CTkButton(self, text="Submit", font=self.font)
             # submit_button.grid(column=2, row=self.row, padx=12, pady=12)
-            # self.submit_button.grid(column=2, row=self.row + 1, pady=12)
+            self.submit_button_all.grid(column=2, row=self.row + 1, pady=12)
 
             self.row += 1
 
@@ -68,8 +68,8 @@ class Gui(ct.CTk):
             self.create_form()
 
 
-
-    def print(self):
+    def submit(self):
+        self.load()
         print(self.dic)
 
 
