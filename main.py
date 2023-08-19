@@ -2,6 +2,10 @@ import customtkinter as ct
 from automate import Driver
 
 
+def on_enter(event):
+    event.widget.ct_focusNext().focus_set()
+
+
 class MainMenu(ct.CTk):
     def __init__(self):
         super().__init__()
@@ -15,12 +19,16 @@ class MainMenu(ct.CTk):
         self.url_entry = ct.CTkEntry(self, placeholder_text="Enter URL", font=font)
         self.load_time_entry = ct.CTkEntry(self, placeholder_text="Enter loading time", font=font)
         open_filler_button = ct.CTkButton(self, text="Open", font=font, command=self.run_web_filler)
+        self.input_selectors = ct.CTkEntry(self, placeholder_text="No of forms", font=font)
+        self.input_forms = ct.CTkEntry(self, placeholder_text="No of dropdowns", font=font)
 
         # Web Filler Display
-        label_form.grid(column=0, row=0, padx=5, pady=50)
-        self.url_entry.grid(column=1, row=0, padx=10, pady=50)
-        self.load_time_entry.grid(column=2, row=0, padx=10, pady=50)
-        open_filler_button.grid(column=3, row=0, padx=10, pady=50)
+        label_form.grid(column=0, row=0, padx=5)
+        self.url_entry.grid(column=1, row=0, padx=10)
+        self.load_time_entry.grid(column=2, row=0, padx=10)
+        open_filler_button.grid(column=3, row=0, padx=10, rowspan=2, ipady=15)
+        self.input_forms.grid(column=1, row=1, padx=10, pady=10)
+        self.input_selectors.grid(column=2, row=1, padx=10, pady=10)
 
     def run_web_filler(self):
         url = self.url_entry.get()
@@ -123,8 +131,7 @@ class WebFiller(ct.CTk):
 
     def submit(self):
         self.load()
-        # url = self.url_entry.get()
-        # load_time = int(self.load_time_entry.get())
+
         driver_instance = Driver(self.url, int(self.load_time))
 
         for name in self.dic_forms:
