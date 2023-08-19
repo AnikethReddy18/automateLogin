@@ -2,7 +2,7 @@ import customtkinter as ct
 from automate import Driver
 
 
-class Gui(ct.CTk):
+class WebFiller(ct.CTk):
     def __init__(self):
         super().__init__()
         self.to_fill = None
@@ -27,7 +27,6 @@ class Gui(ct.CTk):
 
         # Selection Label
         select_label = ct.CTkLabel(self, text="Select the form type:  ", font=self.font)
-        warning_label = ct.CTkLabel(self, text="Only click create after filling the values", font=self.font)
 
         # Dropdown
         self.drop = ct.CTkOptionMenu(self, values=["Form", "Dropdown"], font=self.font, corner_radius=3)
@@ -43,7 +42,6 @@ class Gui(ct.CTk):
         self.load_time_entry.grid(column=1, row=0)
         # Display Selection Part
         select_label.grid(column=0, row=1, padx=12)
-        # warning_label.grid(column=1, row=0, sticky="n")
         self.drop.grid(column=1, row=1, padx=12)
         create_button.grid(column=2, row=1, padx=12)
 
@@ -114,5 +112,7 @@ class Gui(ct.CTk):
 # url = "https://www.instagram.com/"
 # instagram_driver = Driver(url, 3)
 
-app = Gui()
+# Add main menu
+# IN main menu add an option for webfiller and other option for instagram spammer
+app = WebFiller()
 app.mainloop()
