@@ -135,7 +135,7 @@ class WebFiller(ct.CTk):
 
 
 # url = "https://www.instagram.com/"
-# instagram_driver = Driver(url, 3)
+# instagram_driver = Driver(ul, 3)
 
 
 font = ("Work Sans", 16)
