@@ -24,5 +24,5 @@ class Driver:
         drop = Select(self.driver.find_element(By.NAME, name))
         drop.select_by_value(value)
 
-class Instagram():
-    pass#Write code to spam
+class Instagram(Driver):
+    pass

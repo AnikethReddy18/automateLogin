@@ -2,9 +2,37 @@ import customtkinter as ct
 from automate import Driver
 
 
-class WebFiller(ct.CTk):
+class MainMenu(ct.CTk):
     def __init__(self):
         super().__init__()
+
+        # Configure Window
+        self.title("Web Automater")
+        self.geometry("400*200")
+
+        # Web Filler:
+        label_form = ct.CTkLabel(self, text="Form Filler: ", font=font)
+        self.url_entry = ct.CTkEntry(self, placeholder_text="Enter URL", font=font)
+        self.load_time_entry = ct.CTkEntry(self, placeholder_text="Enter loading time", font=font)
+        open_filler_button = ct.CTkButton(self, text="Open", font=font, command=self.run_web_filler)
+
+        # Web Filler Display
+        label_form.grid(column=0, row=0, padx=5, pady=50)
+        self.url_entry.grid(column=1, row=0, padx=10, pady=50)
+        self.load_time_entry.grid(column=2, row=0, padx=10, pady=50)
+        open_filler_button.grid(column=3, row=0, padx=10, pady=50)
+
+    def run_web_filler(self):
+        url = self.url_entry.get()
+        load_time = int(self.load_time_entry.get())
+        web_filler = WebFiller(url, load_time)
+        web_filler.mainloop()
+
+
+class WebFiller(ct.CTk):
+    def __init__(self, url, load_time):
+        super().__init__()
+
         self.to_fill = None
         self.name_form = None
         self.to_select = None
@@ -13,33 +41,32 @@ class WebFiller(ct.CTk):
         self.dic_forms = {}
         self.dic_selectors = {}
         self.previous_selection = None
+        self.url = url
+        self.load_time = load_time
 
         # Configure Window
         self.title("Automatic Web Filler")
-        self.geometry("625x500")
-
-        # Font
-        self.font = ("Work Sans", 16)
+        self.geometry("600x500")
 
         # Url and load time
-        self.url_entry = ct.CTkEntry(self, placeholder_text="URL of the target site", font=self.font)
-        self.load_time_entry = ct.CTkEntry(self, placeholder_text="Time to load(s)", font=self.font)
+        self.url_entry = ct.CTkEntry(self, placeholder_text="URL of the target site", font=font)
+        self.load_time_entry = ct.CTkEntry(self, placeholder_text="Time to load(s)", font=font)
 
         # Selection Label
-        select_label = ct.CTkLabel(self, text="Select the form type:  ", font=self.font)
+        select_label = ct.CTkLabel(self, text="Select the form type:  ", font=font)
 
         # Dropdown
-        self.drop = ct.CTkOptionMenu(self, values=["Form", "Dropdown"], font=self.font, corner_radius=3)
+        self.drop = ct.CTkOptionMenu(self, values=["Form", "Dropdown"], font=font, corner_radius=3)
 
         # Selection Button
-        create_button = ct.CTkButton(self, text="Create", font=self.font, command=self.create_load)
+        create_button = ct.CTkButton(self, text="Create", font=font, command=self.create_load)
 
         # Submit All Button
-        self.submit_button_all = ct.CTkButton(self, text="Submit All", font=self.font, command=self.submit)
+        self.submit_button_all = ct.CTkButton(self, text="Submit All", font=font, command=self.submit)
 
         # Display URL and load time
-        self.url_entry.grid(column=0, row=0, pady=25)
-        self.load_time_entry.grid(column=1, row=0)
+        # self.url_entry.grid(column=0, row=0, pady=25)
+        # self.load_time_entry.grid(column=1, row=0)
         # Display Selection Part
         select_label.grid(column=0, row=1, padx=12)
         self.drop.grid(column=1, row=1, padx=12)
@@ -47,10 +74,10 @@ class WebFiller(ct.CTk):
 
     def create_form(self):
 
-        self.name_form = ct.CTkEntry(self, placeholder_text="Name of element", font=self.font)
+        self.name_form = ct.CTkEntry(self, placeholder_text="Name of element", font=font)
         self.name_form.grid(column=0, row=self.row, padx=12, pady=20)
 
-        self.to_fill = ct.CTkEntry(self, placeholder_text="Value to fill", font=self.font)
+        self.to_fill = ct.CTkEntry(self, placeholder_text="Value to fill", font=font)
         self.to_fill.grid(column=1, row=self.row, padx=12, pady=20)
 
         self.submit_button_all.grid(column=2, row=self.row + 1, pady=12)
@@ -61,10 +88,10 @@ class WebFiller(ct.CTk):
 
     def create_selector(self):
 
-        self.name_selector = ct.CTkEntry(self, placeholder_text="Name of element", font=self.font)
+        self.name_selector = ct.CTkEntry(self, placeholder_text="Name of element", font=font)
         self.name_selector.grid(column=0, row=self.row, padx=12, pady=20)
 
-        self.to_select = ct.CTkEntry(self, placeholder_text="Value to Select", font=self.font)
+        self.to_select = ct.CTkEntry(self, placeholder_text="Value to Select", font=font)
         self.to_select.grid(column=1, row=self.row, padx=12, pady=20)
 
         self.submit_button_all.grid(column=2, row=self.row + 1, pady=12)
@@ -98,9 +125,9 @@ class WebFiller(ct.CTk):
 
     def submit(self):
         self.load()
-        url = self.url_entry.get()
-        load_time = int(self.load_time_entry.get())
-        driver_instance = Driver(url, int(load_time))
+        # url = self.url_entry.get()
+        # load_time = int(self.load_time_entry.get())
+        driver_instance = Driver(self.url, int(self.load_time))
 
         for name in self.dic_forms:
             driver_instance.form_fill(name, self.dic_forms[name])
@@ -114,5 +141,6 @@ class WebFiller(ct.CTk):
 
 # Add main menu
 # IN main menu add an option for webfiller and other option for instagram spammer
-app = WebFiller()
+font = ("Work Sans", 16)
+app = MainMenu()
 app.mainloop()
