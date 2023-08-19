@@ -7,7 +7,7 @@ class MainMenu(ct.CTk):
         super().__init__()
 
         # Configure Window
-        self.title("Web Automater")
+        self.title("Web Automator")
         self.geometry("400*200")
 
         # Web Filler:
@@ -64,10 +64,8 @@ class WebFiller(ct.CTk):
         # Submit All Button
         self.submit_button_all = ct.CTkButton(self, text="Submit All", font=font, command=self.submit)
 
-        # Display URL and load time
-        # self.url_entry.grid(column=0, row=0, pady=25)
-        # self.load_time_entry.grid(column=1, row=0)
-        # Display Selection Part
+        # Display
+
         select_label.grid(column=0, row=1, padx=12)
         self.drop.grid(column=1, row=1, padx=12)
         create_button.grid(column=2, row=1, padx=12)
@@ -139,8 +137,7 @@ class WebFiller(ct.CTk):
 # url = "https://www.instagram.com/"
 # instagram_driver = Driver(url, 3)
 
-# Add main menu
-# IN main menu add an option for webfiller and other option for instagram spammer
+
 font = ("Work Sans", 16)
 app = MainMenu()
 app.mainloop()
