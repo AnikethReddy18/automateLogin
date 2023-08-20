@@ -11,6 +11,7 @@ class MainMenu(ct.CTk):
         # Configure Window
         self.title("Web Automator")
         self.geometry("400*200")
+        self.eval('tk::PlaceWindow . center')
 
         # Web Filler:
         label_form = ct.CTkLabel(self, text="Form Filler: ", font=font)
@@ -62,6 +63,8 @@ class WebFiller(ct.CTk):
         # Configure Window
         self.title("Automatic Web Filler")
         self.geometry("765x500")
+        self.eval('tk::PlaceWindow . center')
+        self.resizable(height=True, width=True)
 
         # Titles
         form_label = ct.CTkLabel(self, text="Forms", font=("Work Sans", 50))
