@@ -2,10 +2,6 @@ import customtkinter as ct
 from automate import Driver
 
 
-def on_enter(event):
-    event.widget.ct_focusNext().focus_set()
-
-
 class MainMenu(ct.CTk):
     def __init__(self):
         super().__init__()
@@ -33,118 +29,95 @@ class MainMenu(ct.CTk):
     def run_web_filler(self):
         url = self.url_entry.get()
         load_time = int(self.load_time_entry.get())
-        web_filler = WebFiller(url, load_time)
-        web_filler.mainloop()
+        # web_filler = WebFiller(url, load_time)
+        # web_filler.mainloop()
 
 
 class WebFiller(ct.CTk):
-    def __init__(self, url, load_time):
+    def __init__(self, url, load_time, no_forms, no_selectors):
         super().__init__()
 
         self.to_fill = None
         self.name_form = None
         self.to_select = None
         self.name_selector = None
-        self.row = 2
-        self.dic_forms = {}
-        self.dic_selectors = {}
+        self.row_form = 1
+        self.row_selector = 1
         self.previous_selection = None
         self.url = url
         self.load_time = load_time
+        self.no_forms = no_forms
+        self.no_selectors = no_selectors
+        self.dic_forms = {}
+        self.dic_selectors = {}
+
+        self.form_entry_names = []
+        self.form_entry_values = []
+
+        self.selector_entry_names = []
+        self.selector_entry_values = []
 
         # Configure Window
         self.title("Automatic Web Filler")
-        self.geometry("600x500")
+        self.geometry("1000x500")
 
-        # Url and load time
-        self.url_entry = ct.CTkEntry(self, placeholder_text="URL of the target site", font=font)
-        self.load_time_entry = ct.CTkEntry(self, placeholder_text="Time to load(s)", font=font)
+        # Titles
+        form_label = ct.CTkLabel(self, text="Forms", font=("Work Sans", 50))
+        selector_label = ct.CTkLabel(self, text="Dropdowns", font=("Work Sans", 50))
 
-        # Selection Label
-        select_label = ct.CTkLabel(self, text="Select the form type:  ", font=font)
+        # Display Titles
+        form_label.grid(column=0, row=0, padx=50, pady=30)
+        selector_label.grid(column=2, row=0, padx=50, pady=30)
 
-        # Dropdown
-        self.drop = ct.CTkOptionMenu(self, values=["Form", "Dropdown"], font=font, corner_radius=3)
+        # Make Form Entries
+        for entry in range(self.no_forms):
+            self.form_entry_name = ct.CTkEntry(self)
+            self.form_entry_name.grid(column=0, row=self.row_form, pady=10, padx=10)
+            self.form_entry_value = ct.CTkEntry(self)
+            self.form_entry_value.grid(column=1, row=self.row_form, pady=10, padx=10)
 
-        # Selection Button
-        create_button = ct.CTkButton(self, text="Create", font=font, command=self.create_load)
+            self.form_entry_names.append(self.form_entry_name)
+            self.form_entry_values.append(self.form_entry_value)
 
-        # Submit All Button
-        self.submit_button_all = ct.CTkButton(self, text="Submit All", font=font, command=self.submit)
+            self.row_form += 1
 
-        # Display
+        # Make Selector Entries
+        for entry in range(self.no_selectors):
+            self.selector_entry_name = ct.CTkEntry(self)
+            self.selector_entry_name.grid(column=2, row=self.row_selector, pady=10, padx=10)
+            self.selector_entry_value = ct.CTkEntry(self)
+            self.selector_entry_value.grid(column=3, row=self.row_selector, pady=10, padx=10)
 
-        select_label.grid(column=0, row=1, padx=12)
-        self.drop.grid(column=1, row=1, padx=12)
-        create_button.grid(column=2, row=1, padx=12)
+            self.selector_entry_names.append(self.selector_entry_name)
+            self.selector_entry_values.append(self.selector_entry_value)
 
-    def create_form(self):
+            self.row_selector += 1
 
-        self.name_form = ct.CTkEntry(self, placeholder_text="Name of element", font=font)
-        self.name_form.grid(column=0, row=self.row, padx=12, pady=20)
-
-        self.to_fill = ct.CTkEntry(self, placeholder_text="Value to fill", font=font)
-        self.to_fill.grid(column=1, row=self.row, padx=12, pady=20)
-
-        self.submit_button_all.grid(column=2, row=self.row + 1, pady=12)
-
-        self.row += 1
-
-        self.previous_selection = "form"
-
-    def create_selector(self):
-
-        self.name_selector = ct.CTkEntry(self, placeholder_text="Name of element", font=font)
-        self.name_selector.grid(column=0, row=self.row, padx=12, pady=20)
-
-        self.to_select = ct.CTkEntry(self, placeholder_text="Value to Select", font=font)
-        self.to_select.grid(column=1, row=self.row, padx=12, pady=20)
-
-        self.submit_button_all.grid(column=2, row=self.row + 1, pady=12)
-
-        self.row += 1
-
-        self.previous_selection = "dropdown"
+        # Submit Button
+        submit_button = ct.CTkButton(self, text="Submit", font=("Work Sans", 40), command=self.load)
+        if self.row_form > self.row_selector:
+            submit_button.grid(column=0, row=self.row_form + 1, columnspan=4, pady=20, ipadx=400,
+                               ipady=25)
+        else:
+            submit_button.grid(column=0, row=self.row_selector + 1, columnspan=4, pady=20, ipadx=400,
+                               ipady=25)
 
     def load(self):
+        for entry_index in range(self.no_forms):
+            form_entry_name = self.form_entry_names[entry_index].get()
+            form_entry_value = self.form_entry_values[entry_index].get()
+            self.dic_forms[form_entry_name] = form_entry_value
 
-        if self.previous_selection == "form":
-            self.dic_forms[self.name_form.get()] = self.to_fill.get()
-        else:
-            self.dic_selectors[self.name_selector.get()] = self.to_select.get()
-
-    def create_load(self):
-
-        state = self.drop.get()
-        if not self.previous_selection:
-            if state == "Form":
-                self.create_form()
-            else:
-                self.create_selector()
-
-        else:
-            self.load()
-            if state == "Form":
-                self.create_form()
-            else:
-                self.create_selector()
+        for entry_index in range(self.no_selectors):
+            selector_entry_name = self.selector_entry_names[entry_index].get()
+            selector_entry_value = self.selector_entry_values[entry_index].get()
+            self.dic_selectors[selector_entry_name] = selector_entry_value
 
     def submit(self):
-        self.load()
-
-        driver_instance = Driver(self.url, int(self.load_time))
-
-        for name in self.dic_forms:
-            driver_instance.form_fill(name, self.dic_forms[name])
-
-        for name in self.dic_selectors:
-            driver_instance.select_dropdown(name, self.dic_selectors[name])
-
-
-# url = "https://www.instagram.com/"
-# instagram_driver = Driver(ul, 3)
+        pass
 
 
 font = ("Work Sans", 16)
-app = MainMenu()
+# app = MainMenu()
+app = WebFiller("awd", 2, 3, 5)
 app.mainloop()
