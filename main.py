@@ -29,17 +29,17 @@ class MainMenu(ct.CTk):
     def run_web_filler(self):
         url = self.url_entry.get()
         load_time = int(self.load_time_entry.get())
-        # web_filler = WebFiller(url, load_time)
-        # web_filler.mainloop()
+        no_forms = int(self.input_forms.get())
+        no_selectors = int(self.input_selectors.get())
+
+        web_filler = WebFiller(url, load_time, no_forms, no_selectors)
+        web_filler.mainloop()
 
 
 class WebFiller(ct.CTk):
     def __init__(self, url, load_time, no_forms, no_selectors):
         super().__init__()
 
-        self.to_fill = None
-        self.name_form = None
-        self.to_select = None
         self.name_selector = None
         self.row_form = 1
         self.row_selector = 1
@@ -94,7 +94,7 @@ class WebFiller(ct.CTk):
             self.row_selector += 1
 
         # Submit Button
-        submit_button = ct.CTkButton(self, text="Submit", font=("Work Sans", 40), command=self.load)
+        submit_button = ct.CTkButton(self, text="Submit", font=("Work Sans", 40), command=self.submit)
         if self.row_form > self.row_selector:
             submit_button.grid(column=0, row=self.row_form + 1, columnspan=4, pady=20, ipadx=400,
                                ipady=25)
@@ -114,10 +114,20 @@ class WebFiller(ct.CTk):
             self.dic_selectors[selector_entry_name] = selector_entry_value
 
     def submit(self):
-        pass
+        self.load()
+
+        forms = self.dic_forms
+        selectors = self.dic_selectors
+
+        driver = Driver(self.url, self.load_time)
+
+        for name in forms:
+            driver.form_fill(name, forms[name])
+
+        for name in selectors:
+            driver.select_dropdown(name, selectors[name])
 
 
 font = ("Work Sans", 16)
-# app = MainMenu()
-app = WebFiller("awd", 2, 3, 5)
+app = MainMenu()
 app.mainloop()
