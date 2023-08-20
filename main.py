@@ -1,5 +1,7 @@
 import customtkinter as ct
 from automate import Driver
+import time
+import threading
 
 
 class MainMenu(ct.CTk):
@@ -59,22 +61,22 @@ class WebFiller(ct.CTk):
 
         # Configure Window
         self.title("Automatic Web Filler")
-        self.geometry("1000x500")
+        self.geometry("765x500")
 
         # Titles
         form_label = ct.CTkLabel(self, text="Forms", font=("Work Sans", 50))
         selector_label = ct.CTkLabel(self, text="Dropdowns", font=("Work Sans", 50))
 
         # Display Titles
-        form_label.grid(column=0, row=0, padx=50, pady=30)
-        selector_label.grid(column=2, row=0, padx=50, pady=30)
+        form_label.grid(column=0, row=0, padx=100, pady=30, columnspan=2)
+        selector_label.grid(column=2, row=0, padx=100, pady=30, columnspan=2)
 
         # Make Form Entries
         for entry in range(self.no_forms):
             self.form_entry_name = ct.CTkEntry(self)
-            self.form_entry_name.grid(column=0, row=self.row_form, pady=10, padx=10)
+            self.form_entry_name.grid(column=0, row=self.row_form, pady=10, padx=5)
             self.form_entry_value = ct.CTkEntry(self)
-            self.form_entry_value.grid(column=1, row=self.row_form, pady=10, padx=10)
+            self.form_entry_value.grid(column=1, row=self.row_form, pady=10, padx=5)
 
             self.form_entry_names.append(self.form_entry_name)
             self.form_entry_values.append(self.form_entry_value)
@@ -84,9 +86,9 @@ class WebFiller(ct.CTk):
         # Make Selector Entries
         for entry in range(self.no_selectors):
             self.selector_entry_name = ct.CTkEntry(self)
-            self.selector_entry_name.grid(column=2, row=self.row_selector, pady=10, padx=10)
+            self.selector_entry_name.grid(column=2, row=self.row_selector, pady=10)
             self.selector_entry_value = ct.CTkEntry(self)
-            self.selector_entry_value.grid(column=3, row=self.row_selector, pady=10, padx=10)
+            self.selector_entry_value.grid(column=3, row=self.row_selector, pady=10)
 
             self.selector_entry_names.append(self.selector_entry_name)
             self.selector_entry_values.append(self.selector_entry_value)
@@ -96,10 +98,10 @@ class WebFiller(ct.CTk):
         # Submit Button
         submit_button = ct.CTkButton(self, text="Submit", font=("Work Sans", 40), command=self.submit)
         if self.row_form > self.row_selector:
-            submit_button.grid(column=0, row=self.row_form + 1, columnspan=4, pady=20, ipadx=400,
+            submit_button.grid(column=0, row=self.row_form + 1, columnspan=4, pady=12, ipadx=300,
                                ipady=25)
         else:
-            submit_button.grid(column=0, row=self.row_selector + 1, columnspan=4, pady=20, ipadx=400,
+            submit_button.grid(column=0, row=self.row_selector + 1, columnspan=4, pady=12, ipadx=300,
                                ipady=25)
 
     def load(self):
