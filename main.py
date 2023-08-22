@@ -21,6 +21,7 @@ class MainMenu(ct.CTk):
         self.input_selectors = ct.CTkEntry(self, placeholder_text="No of forms", font=font)
         self.input_forms = ct.CTkEntry(self, placeholder_text="No of dropdowns", font=font)
 
+
         # Web Filler Display
         label_form.grid(column=0, row=0, padx=5)
         self.url_entry.grid(column=1, row=0, padx=10)
@@ -28,6 +29,7 @@ class MainMenu(ct.CTk):
         open_filler_button.grid(column=3, row=0, padx=10, rowspan=2, ipady=15)
         self.input_forms.grid(column=1, row=1, padx=10, pady=10)
         self.input_selectors.grid(column=2, row=1, padx=10, pady=10)
+
 
     def run_web_filler(self):
         url = self.url_entry.get()
