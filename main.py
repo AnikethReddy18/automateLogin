@@ -1,11 +1,14 @@
 import customtkinter as ct
 from automate import Driver
 from tkinter import simpledialog
+from Database import User
+
 
 class Login(ct.CTk):
     def __init__(self):
         super().__init__()
-        users = ["one", "two", "yep"]
+        self.user = User()
+        self.users = self.user.get_users()
 
         # Configure Window
         self.title("Select User")
@@ -15,20 +18,22 @@ class Login(ct.CTk):
         # UI
 
         select_label = ct.CTkLabel(self, text="Select User:", font=font)
-        user_dropdown = ct.CTkOptionMenu(self, values=users, command=self.load_user, font=font)
+        self.user_dropdown = ct.CTkOptionMenu(self, values=self.users, font=font)
         new_user_button = ct.CTkButton(self, text="New User", font=font, command=self.new_user)
 
         # Display UI
         select_label.grid(column=0, row=0, padx=5, pady=5)
-        user_dropdown.grid(column=1, row=0, padx=5, pady=5)
+        self.user_dropdown.grid(column=1, row=0, padx=5, pady=5)
         new_user_button.grid(column=0, row=1, padx=5, pady=5, columnspan=2, ipadx=40)
-
-    def load_user(self, user):
-        print(f"User is {user}")
 
     def new_user(self):
         new_username = simpledialog.askstring("New User", "What is do you want as your username?")
-        print(new_username)
+        self.user.create_user(new_username)
+        self.users = self.user.get_users()
+
+
+
+
 class MainMenu(ct.CTk):
     def __init__(self):
         super().__init__()
