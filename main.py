@@ -1,16 +1,41 @@
 import customtkinter as ct
 from automate import Driver
-import time
-import threading
+from tkinter import simpledialog
 
+class Login(ct.CTk):
+    def __init__(self):
+        super().__init__()
+        users = ["one", "two", "yep"]
 
+        # Configure Window
+        self.title("Select User")
+        # self.geometry("100x100")
+        self.eval('tk::PlaceWindow . center')
+
+        # UI
+
+        select_label = ct.CTkLabel(self, text="Select User:", font=font)
+        user_dropdown = ct.CTkOptionMenu(self, values=users, command=self.load_user, font=font)
+        new_user_button = ct.CTkButton(self, text="New User", font=font, command=self.new_user)
+
+        # Display UI
+        select_label.grid(column=0, row=0, padx=5, pady=5)
+        user_dropdown.grid(column=1, row=0, padx=5, pady=5)
+        new_user_button.grid(column=0, row=1, padx=5, pady=5, columnspan=2, ipadx=40)
+
+    def load_user(self, user):
+        print(f"User is {user}")
+
+    def new_user(self):
+        new_username = simpledialog.askstring("New User", "What is do you want as your username?")
+        print(new_username)
 class MainMenu(ct.CTk):
     def __init__(self):
         super().__init__()
 
         # Configure Window
         self.title("Web Automator")
-        self.geometry("400*200")
+        self.geometry("575x85")
         self.eval('tk::PlaceWindow . center')
 
         # Web Filler:
@@ -21,7 +46,6 @@ class MainMenu(ct.CTk):
         self.input_selectors = ct.CTkEntry(self, placeholder_text="No of forms", font=font)
         self.input_forms = ct.CTkEntry(self, placeholder_text="No of dropdowns", font=font)
 
-
         # Web Filler Display
         label_form.grid(column=0, row=0, padx=5)
         self.url_entry.grid(column=1, row=0, padx=10)
@@ -29,7 +53,6 @@ class MainMenu(ct.CTk):
         open_filler_button.grid(column=3, row=0, padx=10, rowspan=2, ipady=15)
         self.input_forms.grid(column=1, row=1, padx=10, pady=10)
         self.input_selectors.grid(column=2, row=1, padx=10, pady=10)
-
 
     def run_web_filler(self):
         url = self.url_entry.get()
@@ -136,5 +159,5 @@ class WebFiller(ct.CTk):
 
 
 font = ("Work Sans", 16)
-app = MainMenu()
+app = Login()
 app.mainloop()
