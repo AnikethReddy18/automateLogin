@@ -18,7 +18,7 @@ class Login(ct.CTk):
         # UI
 
         select_label = ct.CTkLabel(self, text="Select User:", font=font)
-        self.user_dropdown = ct.CTkOptionMenu(self, values=self.users, font=font)
+        self.user_dropdown = ct.CTkOptionMenu(self, values=self.users, font=font, command=self.open_menu)
         new_user_button = ct.CTkButton(self, text="New User", font=font, command=self.new_user)
 
         # Display UI
@@ -31,10 +31,11 @@ class Login(ct.CTk):
         self.user.create_user(new_username)
         self.user_dropdown.grid_forget()
         self.users = self.user.get_users()
-        self.user_dropdown = ct.CTkOptionMenu(self, values=self.users, font=font)
+        self.user_dropdown = ct.CTkOptionMenu(self, values=self.users, font=font,commad=self.open_menu)
         self.user_dropdown.grid(column=1, row=0, padx=5, pady=5)
 
-
+    def open_menu(self, username):
+        print(f"Logged in as {username}")
 class MainMenu(ct.CTk):
     def __init__(self):
         super().__init__()
