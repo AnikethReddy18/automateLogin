@@ -34,11 +34,14 @@ class Login(ct.CTk):
         self.user_dropdown = ct.CTkOptionMenu(self, values=self.users, font=font,commad=self.open_menu)
         self.user_dropdown.grid(column=1, row=0, padx=5, pady=5)
 
-    def open_menu(self, username):
-        print(f"Logged in as {username}")
+    @staticmethod
+    def open_menu(username):
+        main_menu = MainMenu(username)
+
 class MainMenu(ct.CTk):
-    def __init__(self):
+    def __init__(self, username):
         super().__init__()
+        self.username = username
 
         # Configure Window
         self.title("Web Automator")
@@ -60,6 +63,9 @@ class MainMenu(ct.CTk):
         open_filler_button.grid(column=3, row=0, padx=10, rowspan=2, ipady=15)
         self.input_forms.grid(column=1, row=1, padx=10, pady=10)
         self.input_selectors.grid(column=2, row=1, padx=10, pady=10)
+
+        # Load Previous Data
+
 
     def run_web_filler(self):
         url = self.url_entry.get()

@@ -8,9 +8,13 @@ class User:
             first_con = sqlite3.connect(path)
             first_cur = first_con.cursor()
 
-            first_cur.execute("CREATE TABLE users(username text)")
+            first_cur.execute("CREATE TABLE users(username TEXT)")
 
             first_cur.execute("INSERT INTO users VALUES ('default_user')")
+
+            first_cur.execute(f"CREATE TABLE form_default_user(id TEXT, value TEXT)")
+            first_cur.execute(f"CREATE TABLE selector_default_user(id TEXT, value TEXT)")
+
             first_cur.close()
             first_con.commit()
 
@@ -31,5 +35,17 @@ class User:
 
         return users
 
+    def gen_user_tables(self, username):
+        form_table_name = f"{username}_form"
+        selector_table_name = f"{username}_selector"
+
+        self.cursor.execute(f"CREATE TABLE {form_table_name}(id TEXT, value TEXT)")
+        self.cursor.execute(f"CREATE TABLE {selector_table_name}(id TEXT, value TEXT)")
+
+        self.connection.commit()
+
 
 path = "database.db"
+
+user = User()
+user.gen_user_tables("sunny")
