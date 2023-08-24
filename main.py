@@ -29,9 +29,10 @@ class Login(ct.CTk):
     def new_user(self):
         new_username = simpledialog.askstring("New User", "What is do you want as your username?")
         self.user.create_user(new_username)
+        self.user_dropdown.grid_forget()
         self.users = self.user.get_users()
-
-
+        self.user_dropdown = ct.CTkOptionMenu(self, values=self.users, font=font)
+        self.user_dropdown.grid(column=1, row=0, padx=5, pady=5)
 
 
 class MainMenu(ct.CTk):
