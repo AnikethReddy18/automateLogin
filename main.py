@@ -44,6 +44,7 @@ class MainMenu(ct.CTk):
     def __init__(self, username):
         super().__init__()
         self.username = username
+        self.load_time = 3
 
         # Configure Window
         self.title("Web Automator")
@@ -53,7 +54,6 @@ class MainMenu(ct.CTk):
         # Web Filler:
         label_form = ct.CTkLabel(self, text="Form Filler: ", font=font)
         self.url_entry = ct.CTkEntry(self, placeholder_text="Enter URL", font=font)
-        self.load_time_entry = ct.CTkEntry(self, placeholder_text="Enter loading time", font=font)
         open_filler_button = ct.CTkButton(self, text="Open", font=font, command=self.run_web_filler)
         self.input_selectors = ct.CTkEntry(self, placeholder_text="No of forms", font=font)
         self.input_forms = ct.CTkEntry(self, placeholder_text="No of dropdowns", font=font)
@@ -61,7 +61,6 @@ class MainMenu(ct.CTk):
         # Web Filler Display
         label_form.grid(column=0, row=0, padx=5)
         self.url_entry.grid(column=1, row=0, padx=10)
-        self.load_time_entry.grid(column=2, row=0, padx=10)
         open_filler_button.grid(column=3, row=0, padx=10, rowspan=2, ipady=15)
         self.input_forms.grid(column=1, row=1, padx=10, pady=10)
         self.input_selectors.grid(column=2, row=1, padx=10, pady=10)
@@ -69,19 +68,22 @@ class MainMenu(ct.CTk):
         # Load Previous Data
         label_prev_data = ct.CTkLabel(self, text="Load Previous Filler: ", font=font)
         button_prev_data = ct.CTkButton(self, text="Load", font=font)
+        prev_url_entry = ct.CTkEntry(self, placeholder_text="Enter URL", font=font)
 
         # Display Previous Data
         label_prev_data.grid(column=0, row=2, padx=5, pady=10)
-        button_prev_data.grid(column=1, row=2, padx=10, pady=10)
+        button_prev_data.grid(column=2, row=2, padx=10, pady=10)
+        prev_url_entry.grid(column=1, row=2,  pady=5)
 
     def run_web_filler(self):
         url = self.url_entry.get()
-        load_time = int(self.load_time_entry.get())
         no_forms = int(self.input_forms.get())
         no_selectors = int(self.input_selectors.get())
 
-        web_filler = WebFiller(url, load_time, no_forms, no_selectors)
+        web_filler = WebFiller(url, self.load_time, no_forms, no_selectors)
         web_filler.mainloop()
+
+
 
 
 class WebFiller(ct.CTk):
