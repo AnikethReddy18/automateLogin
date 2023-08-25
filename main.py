@@ -35,16 +35,16 @@ class Login(ct.CTk):
         self.user_dropdown = ct.CTkOptionMenu(self, values=self.users, font=font, command=self.open_menu)
         self.user_dropdown.grid(column=1, row=0, padx=5, pady=5)
 
-    @staticmethod
-    def open_menu(username):
-        main_menu = MainMenu(username)
+    def open_menu(self, username):
+        main_menu = MainMenu(username, self.user)
 
 
 class MainMenu(ct.CTk):
-    def __init__(self, username):
+    def __init__(self, username, user):
         super().__init__()
         self.username = username
         self.load_time = 3
+        self.user = user
 
         # Configure Window
         self.title("Web Automator")
@@ -67,13 +67,13 @@ class MainMenu(ct.CTk):
 
         # Load Previous Data
         label_prev_data = ct.CTkLabel(self, text="Load Previous Filler: ", font=font)
-        button_prev_data = ct.CTkButton(self, text="Load", font=font,  command=lambda: self.run_web_filler(False))
-        prev_url_entry = ct.CTkEntry(self, placeholder_text="Enter URL", font=font)
+        button_prev_data = ct.CTkButton(self, text="Load", font=font, command=lambda: self.run_web_filler(False))
+        self.prev_url_entry = ct.CTkEntry(self, placeholder_text="Enter URL", font=font)
 
         # Display Previous Data
         label_prev_data.grid(column=0, row=2, padx=5, pady=10)
         button_prev_data.grid(column=2, row=2, padx=10, pady=10)
-        prev_url_entry.grid(column=1, row=2,  pady=5)
+        self.prev_url_entry.grid(column=1, row=2, pady=5)
 
     def run_web_filler(self, is_new):
         if is_new:
@@ -85,9 +85,11 @@ class MainMenu(ct.CTk):
             web_filler.mainloop()
 
         else:
-            print("New")
+            url = self.prev_url_entry.get()
+            no_forms, no_selectors = self.user.get_no(self.username)
 
-
+            web_filler = WebFiller(url, self.load_time, no_forms, no_selectors)
+            web_filler.mainloop()
 
 
 class WebFiller(ct.CTk):
@@ -185,5 +187,5 @@ class WebFiller(ct.CTk):
 
 
 font = ("Work Sans", 16)
-app = MainMenu("default_user")
+app = Login()
 app.mainloop()

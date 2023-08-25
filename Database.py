@@ -13,7 +13,7 @@ class User:
             first_cur.execute("INSERT INTO users VALUES ('default_user')")
 
             first_cur.execute(f"CREATE TABLE default_user_form(id TEXT, value TEXT)")
-            first_cur.execute(f"CREATE TABLE selector_default_selector(id TEXT, value TEXT)")
+            first_cur.execute(f"CREATE TABLE selector_user_selector(id TEXT, value TEXT)")
 
             first_cur.close()
             first_con.commit()
@@ -43,6 +43,15 @@ class User:
         self.cursor.execute(f"CREATE TABLE {selector_table_name}(id TEXT, value TEXT)")
 
         self.connection.commit()
+
+    def get_no(self, username):
+        form_fetch = self.cursor.execute(f"SELECT id FROM {username}_form").fetchall()
+        selector_fetch = self.cursor.execute(f"SELECT id FROM {username}_selector").fetchall()
+        no_forms = len(form_fetch)
+        no_selectors = len(selector_fetch)
+        self.connection.commit()
+
+        return no_forms, no_selectors
 
 
 path = "database.db"
