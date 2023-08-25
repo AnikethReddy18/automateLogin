@@ -54,7 +54,7 @@ class MainMenu(ct.CTk):
         # Web Filler:
         label_form = ct.CTkLabel(self, text="Form Filler: ", font=font)
         self.url_entry = ct.CTkEntry(self, placeholder_text="Enter URL", font=font)
-        open_filler_button = ct.CTkButton(self, text="Open", font=font, command=self.run_web_filler)
+        open_filler_button = ct.CTkButton(self, text="Open", font=font, command=lambda: self.run_web_filler(True))
         self.input_selectors = ct.CTkEntry(self, placeholder_text="No of forms", font=font)
         self.input_forms = ct.CTkEntry(self, placeholder_text="No of dropdowns", font=font)
 
@@ -67,7 +67,7 @@ class MainMenu(ct.CTk):
 
         # Load Previous Data
         label_prev_data = ct.CTkLabel(self, text="Load Previous Filler: ", font=font)
-        button_prev_data = ct.CTkButton(self, text="Load", font=font)
+        button_prev_data = ct.CTkButton(self, text="Load", font=font,  command=lambda: self.run_web_filler(False))
         prev_url_entry = ct.CTkEntry(self, placeholder_text="Enter URL", font=font)
 
         # Display Previous Data
@@ -75,13 +75,17 @@ class MainMenu(ct.CTk):
         button_prev_data.grid(column=2, row=2, padx=10, pady=10)
         prev_url_entry.grid(column=1, row=2,  pady=5)
 
-    def run_web_filler(self):
-        url = self.url_entry.get()
-        no_forms = int(self.input_forms.get())
-        no_selectors = int(self.input_selectors.get())
+    def run_web_filler(self, is_new):
+        if is_new:
+            url = self.url_entry.get()
+            no_forms = int(self.input_forms.get())
+            no_selectors = int(self.input_selectors.get())
 
-        web_filler = WebFiller(url, self.load_time, no_forms, no_selectors)
-        web_filler.mainloop()
+            web_filler = WebFiller(url, self.load_time, no_forms, no_selectors)
+            web_filler.mainloop()
+
+        else:
+            print("New")
 
 
 
