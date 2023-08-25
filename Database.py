@@ -64,5 +64,27 @@ class User:
             self.connection.execute(f"INSERT INTO {username}_selector (id, value) VALUES (?,?)", id_value)
         self.connection.commit()
 
+    def get_forms(self, username):
+        table_name = f"{username}_form"
+        forms_dict = {}
+
+        forms = self.connection.execute(f"SELECT id, value FROM {table_name}").fetchall()
+
+        for key, value in forms:
+            forms_dict[key] = value
+
+        return forms_dict
+
+    def get_selectors(self, username):
+        table_name = f"{username}_selector"
+        selectors_dict = {}
+
+        selectors = self.connection.execute(f"SELECT id, value FROM {table_name}").fetchall()
+
+        for key, value in selectors:
+            selectors_dict[key] = value
+
+        return selectors_dict
+
 
 path = "database.db"

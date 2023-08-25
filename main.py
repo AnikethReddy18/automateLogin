@@ -82,19 +82,19 @@ class MainMenu(ct.CTk):
             no_forms = int(self.input_forms.get())
             no_selectors = int(self.input_selectors.get())
 
-            web_filler = WebFiller(url, self.load_time, no_forms, no_selectors, self.user, self.username)
+            web_filler = WebFiller(url, self.load_time, no_forms, no_selectors, self.user, self.username, False)
             web_filler.mainloop()
 
         else:
             url = self.prev_url_entry.get()
             no_forms, no_selectors = self.user.get_no(self.username)
 
-            web_filler = WebFiller(url, self.load_time, no_forms, no_selectors, self.user, self.username)
+            web_filler = WebFiller(url, self.load_time, no_forms, no_selectors, self.user, self.username, True)
             web_filler.mainloop()
 
 
 class WebFiller(ct.CTk):
-    def __init__(self, url, load_time, no_forms, no_selectors, user, username):
+    def __init__(self, url, load_time, no_forms, no_selectors, user, username, load_prev_data):
         super().__init__()
         self.user = user
         self.username = username
@@ -169,6 +169,9 @@ class WebFiller(ct.CTk):
             save_button.grid(column=0, row=self.row_selector + 2, columnspan=2, pady=5, ipadx=50)
             save_submit_button.grid(column=2, row=self.row_selector + 2, columnspan=2, pady=5, ipadx=50)
 
+        if load_prev_data:
+            self.load_prev_data()
+
     def load(self):
         for entry_index in range(self.no_forms):
             form_entry_name = self.form_entry_names[entry_index].get()
@@ -210,6 +213,9 @@ class WebFiller(ct.CTk):
     def save_submit(self):
         self.save()
         self.submit()
+
+    def load_prev_data(self):
+        forms_dict = self.user.get_forms(self.username)
 
 
 font = ("Work Sans", 16)
