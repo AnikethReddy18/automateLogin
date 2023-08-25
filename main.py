@@ -47,7 +47,7 @@ class MainMenu(ct.CTk):
 
         # Configure Window
         self.title("Web Automator")
-        self.geometry("575x85")
+        self.geometry("650x125")
         self.eval('tk::PlaceWindow . center')
 
         # Web Filler:
@@ -67,6 +67,12 @@ class MainMenu(ct.CTk):
         self.input_selectors.grid(column=2, row=1, padx=10, pady=10)
 
         # Load Previous Data
+        label_prev_data = ct.CTkLabel(self, text="Load Previous Filler: ", font=font)
+        button_prev_data = ct.CTkButton(self, text="Load", font=font)
+
+        # Display Previous Data
+        label_prev_data.grid(column=0, row=2, padx=5, pady=10)
+        button_prev_data.grid(column=1, row=2, padx=10, pady=10)
 
     def run_web_filler(self):
         url = self.url_entry.get()
@@ -173,5 +179,5 @@ class WebFiller(ct.CTk):
 
 
 font = ("Work Sans", 16)
-app = Login()
+app = MainMenu("default_user")
 app.mainloop()
