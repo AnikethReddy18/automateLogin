@@ -30,13 +30,15 @@ class Login(ct.CTk):
         new_username = simpledialog.askstring("New User", "What is do you want as your username?")
         self.user.create_user(new_username)
         self.user_dropdown.grid_forget()
+        self.user.gen_user_tables(new_username)
         self.users = self.user.get_users()
-        self.user_dropdown = ct.CTkOptionMenu(self, values=self.users, font=font,commad=self.open_menu)
+        self.user_dropdown = ct.CTkOptionMenu(self, values=self.users, font=font, command=self.open_menu)
         self.user_dropdown.grid(column=1, row=0, padx=5, pady=5)
 
     @staticmethod
     def open_menu(username):
         main_menu = MainMenu(username)
+
 
 class MainMenu(ct.CTk):
     def __init__(self, username):
@@ -65,7 +67,6 @@ class MainMenu(ct.CTk):
         self.input_selectors.grid(column=2, row=1, padx=10, pady=10)
 
         # Load Previous Data
-
 
     def run_web_filler(self):
         url = self.url_entry.get()

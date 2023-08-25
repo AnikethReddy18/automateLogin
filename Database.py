@@ -12,8 +12,8 @@ class User:
 
             first_cur.execute("INSERT INTO users VALUES ('default_user')")
 
-            first_cur.execute(f"CREATE TABLE form_default_user(id TEXT, value TEXT)")
-            first_cur.execute(f"CREATE TABLE selector_default_user(id TEXT, value TEXT)")
+            first_cur.execute(f"CREATE TABLE default_user_form(id TEXT, value TEXT)")
+            first_cur.execute(f"CREATE TABLE selector_default_selector(id TEXT, value TEXT)")
 
             first_cur.close()
             first_con.commit()
@@ -46,6 +46,3 @@ class User:
 
 
 path = "database.db"
-
-user = User()
-user.gen_user_tables("sunny")
