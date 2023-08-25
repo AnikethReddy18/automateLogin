@@ -82,20 +82,22 @@ class MainMenu(ct.CTk):
             no_forms = int(self.input_forms.get())
             no_selectors = int(self.input_selectors.get())
 
-            web_filler = WebFiller(url, self.load_time, no_forms, no_selectors)
+            web_filler = WebFiller(url, self.load_time, no_forms, no_selectors, self.user, self.username)
             web_filler.mainloop()
 
         else:
             url = self.prev_url_entry.get()
             no_forms, no_selectors = self.user.get_no(self.username)
 
-            web_filler = WebFiller(url, self.load_time, no_forms, no_selectors)
+            web_filler = WebFiller(url, self.load_time, no_forms, no_selectors, self.user, self.username)
             web_filler.mainloop()
 
 
 class WebFiller(ct.CTk):
-    def __init__(self, url, load_time, no_forms, no_selectors):
+    def __init__(self, url, load_time, no_forms, no_selectors, user, username):
         super().__init__()
+        self.user = user
+        self.username = username
 
         self.name_selector = None
         self.row_form = 1
@@ -154,11 +156,11 @@ class WebFiller(ct.CTk):
 
         # Save, Submit Buttons
         submit_button = ct.CTkButton(self, text="Submit", font=("Work Sans", 40), command=self.submit)
-        save_button = ct.CTkButton(self, text="Save", font=("Work Sans", 25))
-        save_submit_button = ct.CTkButton(self, text="Save & Submit", font=("Work Sans", 25))
+        save_button = ct.CTkButton(self, text="Save", font=("Work Sans", 25), command=self.save)
+        save_submit_button = ct.CTkButton(self, text="Save & Submit", font=("Work Sans", 25), command=self.save_submit)
+
         if self.row_form > self.row_selector:
-            submit_button.grid(column=0, row=self.row_form + 1, columnspan=4, pady=12, ipadx=300,
-                               ipady=25)
+            submit_button.grid(column=0, row=self.row_form + 1, columnspan=4, pady=12, ipadx=300, ipady=25)
             save_button.grid(column=0, row=self.row_form + 2, columnspan=2, pady=5, ipadx=50)
             save_submit_button.grid(column=2, row=self.row_form + 2, columnspan=2, pady=5, ipadx=50)
         else:
@@ -191,6 +193,23 @@ class WebFiller(ct.CTk):
 
         for name in selectors:
             driver.select_dropdown(name, selectors[name])
+
+    def save(self):
+        self.load()
+        forms = []
+        for id_ in self.dic_forms:
+            forms.append((id_, self.dic_forms[id_]))
+
+        selectors = []
+        for id_ in self.dic_selectors:
+            selectors.append((id_, self.dic_selectors[id_]))
+
+        self.user.save_forms(forms, self.username)
+        self.user.save_selectors(selectors, self.username)
+
+    def save_submit(self):
+        self.save()
+        self.submit()
 
 
 font = ("Work Sans", 16)

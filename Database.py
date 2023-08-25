@@ -53,5 +53,16 @@ class User:
 
         return no_forms, no_selectors
 
+    def save_forms(self, forms, username):
+        print(forms)
+        for id_value in forms:
+            self.connection.execute(f"INSERT INTO {username}_form (id, value) VALUES (?,?)", id_value)
+        self.connection.commit()
+
+    def save_selectors(self, selectors, username):
+        for id_value in selectors:
+            self.connection.execute(f"INSERT INTO {username}_selector (id, value) VALUES (?,?)", id_value)
+        self.connection.commit()
+
 
 path = "database.db"
