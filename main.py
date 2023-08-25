@@ -37,6 +37,7 @@ class Login(ct.CTk):
 
     def open_menu(self, username):
         main_menu = MainMenu(username, self.user)
+        main_menu.mainloop()
 
 
 class MainMenu(ct.CTk):
