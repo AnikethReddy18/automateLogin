@@ -152,14 +152,20 @@ class WebFiller(ct.CTk):
 
             self.row_selector += 1
 
-        # Submit Button
+        # Save, Submit Buttons
         submit_button = ct.CTkButton(self, text="Submit", font=("Work Sans", 40), command=self.submit)
+        save_button = ct.CTkButton(self, text="Save", font=("Work Sans", 25))
+        save_submit_button = ct.CTkButton(self, text="Save & Submit", font=("Work Sans", 25))
         if self.row_form > self.row_selector:
             submit_button.grid(column=0, row=self.row_form + 1, columnspan=4, pady=12, ipadx=300,
                                ipady=25)
+            save_button.grid(column=0, row=self.row_form + 2, columnspan=2, pady=5, ipadx=50)
+            save_submit_button.grid(column=2, row=self.row_form + 2, columnspan=2, pady=5, ipadx=50)
         else:
             submit_button.grid(column=0, row=self.row_selector + 1, columnspan=4, pady=12, ipadx=300,
                                ipady=25)
+            save_button.grid(column=0, row=self.row_selector + 2, columnspan=2, pady=5, ipadx=50)
+            save_submit_button.grid(column=2, row=self.row_selector + 2, columnspan=2, pady=5, ipadx=50)
 
     def load(self):
         for entry_index in range(self.no_forms):
