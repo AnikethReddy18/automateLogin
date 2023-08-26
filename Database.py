@@ -12,8 +12,8 @@ class User:
 
             first_cur.execute("INSERT INTO users VALUES ('default_user')")
 
-            first_cur.execute(f"CREATE TABLE default_user_form(id TEXT, value TEXT)")
-            first_cur.execute(f"CREATE TABLE selector_user_selector(id TEXT, value TEXT)")
+            first_cur.execute(f"CREATE TABLE default_user_form(name TEXT, value TEXT)")
+            first_cur.execute(f"CREATE TABLE selector_user_selector(name TEXT, value TEXT)")
 
             first_cur.close()
             first_con.commit()
@@ -39,14 +39,14 @@ class User:
         form_table_name = f"{username}_form"
         selector_table_name = f"{username}_selector"
 
-        self.cursor.execute(f"CREATE TABLE {form_table_name}(id TEXT, value TEXT)")
-        self.cursor.execute(f"CREATE TABLE {selector_table_name}(id TEXT, value TEXT)")
+        self.cursor.execute(f"CREATE TABLE {form_table_name}(name TEXT, value TEXT)")
+        self.cursor.execute(f"CREATE TABLE {selector_table_name}(name TEXT, value TEXT)")
 
         self.connection.commit()
 
     def get_no(self, username):
-        form_fetch = self.cursor.execute(f"SELECT id FROM {username}_form").fetchall()
-        selector_fetch = self.cursor.execute(f"SELECT id FROM {username}_selector").fetchall()
+        form_fetch = self.cursor.execute(f"SELECT name FROM {username}_form").fetchall()
+        selector_fetch = self.cursor.execute(f"SELECT name FROM {username}_selector").fetchall()
         no_forms = len(form_fetch)
         no_selectors = len(selector_fetch)
         self.connection.commit()
@@ -56,19 +56,19 @@ class User:
     def save_forms(self, forms, username):
         print(forms)
         for id_value in forms:
-            self.connection.execute(f"INSERT INTO {username}_form (id, value) VALUES (?,?)", id_value)
+            self.connection.execute(f"INSERT INTO {username}_form (name, value) VALUES (?,?)", id_value)
         self.connection.commit()
 
     def save_selectors(self, selectors, username):
         for id_value in selectors:
-            self.connection.execute(f"INSERT INTO {username}_selector (id, value) VALUES (?,?)", id_value)
+            self.connection.execute(f"INSERT INTO {username}_selector (name, value) VALUES (?,?)", id_value)
         self.connection.commit()
 
     def get_forms(self, username):
         table_name = f"{username}_form"
         forms_dict = {}
 
-        forms = self.connection.execute(f"SELECT id, value FROM {table_name}").fetchall()
+        forms = self.connection.execute(f"SELECT name, value FROM {table_name}").fetchall()
 
         for key, value in forms:
             forms_dict[key] = value
@@ -79,7 +79,7 @@ class User:
         table_name = f"{username}_selector"
         selectors_dict = {}
 
-        selectors = self.connection.execute(f"SELECT id, value FROM {table_name}").fetchall()
+        selectors = self.connection.execute(f"SELECT name, value FROM {table_name}").fetchall()
 
         for key, value in selectors:
             selectors_dict[key] = value
