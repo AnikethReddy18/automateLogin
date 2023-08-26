@@ -94,8 +94,9 @@ class MainMenu(ct.CTk):
 
 
 class WebFiller(ct.CTk):
-    def __init__(self, url, load_time, no_forms, no_selectors, user, username, load_prev_data):
+    def __init__(self, url, load_time, no_forms, no_selectors, user, username, is_prev):
         super().__init__()
+        self.is_prev = is_prev
         self.form_entry_value = None
         self.form_entry_name = None
         self.selector_entry_value = None
@@ -136,14 +137,12 @@ class WebFiller(ct.CTk):
         form_label.grid(column=0, row=0, padx=100, pady=30, columnspan=2)
         selector_label.grid(column=2, row=0, padx=100, pady=30, columnspan=2)
 
-        
-
-        if load_prev_data:
+        if self.is_prev:
             self.load_prev_data()
-            self.make_entries(True)
+            self.make_entries()
 
         else:
-            self.make_entries(False)
+            self.make_entries()
 
         # Save, Submit Buttons
         submit_button = ct.CTkButton(self, text="Submit", font=("Work Sans", 40), command=self.submit)
@@ -171,28 +170,30 @@ class WebFiller(ct.CTk):
             selector_entry_value = self.selector_entry_values[entry_index].get()
             self.dic_selectors[selector_entry_name] = selector_entry_value
 
-    def make_entries(self, is_prev):
+    def make_entries(self):
+        is_prev = self.is_prev
+
         # Make Selector Entries
         if is_prev:
-            for name  in self.forms_dict_prev:
+            for name in self.forms_dict_prev:
                 self.form_entry_name = ct.CTkEntry(self)
                 self.form_entry_name.grid(column=0, row=self.row_form, pady=10, padx=5)
-                self.form_entry_name.insert(0, "form-name")
+                self.form_entry_name.insert(0, name)
 
                 self.form_entry_value = ct.CTkEntry(self)
                 self.form_entry_value.grid(column=1, row=self.row_form, pady=10, padx=5)
-                self.form_entry_value.insert(0, "form-value")
+                self.form_entry_value.insert(0, self.forms_dict_prev[name])
 
                 self.row_form += 1
 
-            for entry in range(self.no_selectors):
+            for name in self.selectors_dict_prev:
                 self.selector_entry_name = ct.CTkEntry(self)
                 self.selector_entry_name.grid(column=2, row=self.row_selector, pady=10)
-                self.selector_entry_name.insert(0, "selector-name")
+                self.selector_entry_name.insert(0, name)
 
                 self.selector_entry_value = ct.CTkEntry(self)
                 self.selector_entry_value.grid(column=3, row=self.row_selector, pady=10)
-                self.selector_entry_value.insert(0, "selector-value")
+                self.selector_entry_value.insert(0, self.selectors_dict_prev[name])
 
                 self.row_selector += 1
 
@@ -208,7 +209,7 @@ class WebFiller(ct.CTk):
                 self.form_entry_values.append(self.form_entry_value)
 
                 self.row_form += 1
-                
+
             for entry in range(self.no_selectors):
                 self.selector_entry_name = ct.CTkEntry(self)
                 self.selector_entry_name.grid(column=2, row=self.row_selector, pady=10)
@@ -220,9 +221,13 @@ class WebFiller(ct.CTk):
 
                 self.row_selector += 1
 
-    def submit(self):
+    def submit(self, is_prev):
         self.load()
 
+        # if is_prev:
+        #     forms = self.
+        #
+        #     pass
         forms = self.dic_forms
         selectors = self.dic_selectors
 
