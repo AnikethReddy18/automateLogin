@@ -221,15 +221,16 @@ class WebFiller(ct.CTk):
 
                 self.row_selector += 1
 
-    def submit(self, is_prev):
-        self.load()
+    def submit(self):
 
-        # if is_prev:
-        #     forms = self.
-        #
-        #     pass
-        forms = self.dic_forms
-        selectors = self.dic_selectors
+        if self.is_prev:
+            forms = self.forms_dict_prev
+            selectors = self.selectors_dict_prev
+
+        else:
+            self.load()
+            forms = self.dic_forms
+            selectors = self.dic_selectors
 
         driver = Driver(self.url, self.load_time)
 
